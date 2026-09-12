@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: surprise-site/package-lock.json
       - name: Install dependencies
         run: npm install
       - name: Build
@@ -25,4 +25,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./surprise-site/dist
