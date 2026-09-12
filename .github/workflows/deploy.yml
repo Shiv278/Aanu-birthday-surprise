@@ -16,9 +16,18 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: ./Aanu-birthday-surprise/surprise-site/dist
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Debug: manual deploy to gh-pages (temporary)
+        shell: bash
+        run: |
+          set -e
+          echo "Listing dist contents"
+          ls -la ./Aanu-birthday-surprise/surprise-site/dist || true
+          git --version
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cd ./Aanu-birthday-surprise/surprise-site/dist
+          git init
+          git add -A
+          git commit -m "deploy: $GITHUB_SHA" || echo "no changes to commit"
+          echo "Pushing to gh-pages"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:gh-pages
